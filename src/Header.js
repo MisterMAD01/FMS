@@ -19,7 +19,7 @@ const Header = () => {
         <Container fluid>
           <Navbar.Brand href="#">
             <img
-              src="/images/Logo.png"
+              src="/images/Starbucks_Corporation_Logo_2011.png"
               alt="Logo"
               style={{ padding: 10, height: "70px" }}
             />

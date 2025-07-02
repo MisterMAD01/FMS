@@ -1,11 +1,17 @@
 import React from "react";
-import Comment from "./Comment";
-function Post() {
+import PostItem from "./PostItem";
+function Posts(props) {
   return (
-    <div className="App-Post">
-      Post.js
-      <Comment />
+    <div>
+      <PostItem
+        title="Hello World"
+        content="This is content of Hello World."
+      ></PostItem>
+      <PostItem
+        title="Goodbye World"
+        content="This is content of Goodbye."
+      ></PostItem>
     </div>
   );
 }
-export default Post;
+export default Posts;
