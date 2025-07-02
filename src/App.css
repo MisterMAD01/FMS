@@ -11,15 +11,18 @@
   }
 }
 .App-header {
-  background-color: #7f8185;
+  background-color: #2e5bb5;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(253, 251, 251);
+  width: 1000px;
+  height: 600px;
+  margin: 20px;
+  padding: 100px;
 }
-
 .App-link {
   color: #61dafb;
 }
@@ -31,23 +34,29 @@
     transform: rotate(360deg);
   }
 }
-.footer {
-  background-color: #f1f1f1;
-  padding: 10px;
-  text-align: center;
-}
-.flex-container {
+.App-Post {
+  background-color: rgba(40, 238, 0, 0.667);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  background-color: rgb(190, 198, 207);
+  font-size: calc(10px + 2vmin);
+  color: white;
+  width: 700px;
+  height: 500px;
+  margin: 120px;
+  padding: 5px;
 }
-.flex-container > div {
-  background-color: #f1f1f1;
-  width: 400px;
-  height: 490px;
-  margin: 5px;
-  text-align: center;
-  line-height: 75px;
-  font-size: 30px;
+.App-Comment {
+  background-color: #f19e03;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  width: 350px;
+  height: 350px;
+  margin: 120px;
+  padding: 5px;
 }
