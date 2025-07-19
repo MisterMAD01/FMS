@@ -19,7 +19,7 @@ const Header = () => {
         <Container fluid>
           <Navbar.Brand href="#">
             <img
-              src="/images/Starbucks_Corporation_Logo_2011.png"
+              src="Starbucks_Corporation_Logo_2011.png"
               alt="Logo"
               style={{ padding: 10, height: "70px" }}
             />
@@ -91,7 +91,11 @@ const Header = () => {
               />
             </Form>
             <Nav>
-              <img className="App-avartar" src="/images/2.png" alt="Logo" />
+              <img
+                className="App-avartar"
+                src="Starbucks_Corporation_Logo_2011.png"
+                alt="Logo"
+              />
             </Nav>
           </Navbar.Collapse>
         </Container>
