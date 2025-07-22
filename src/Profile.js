@@ -1,8 +1,8 @@
 import React from "react";
 function Profile() {
   return (
-    <div>
-      <p>This is My Profile of the user.</p>
+    <div className="App">
+      <h1>Profile</h1>
     </div>
   );
 }
