@@ -3,20 +3,33 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <div className="container text-success p-3 mt-3 mb-3">
-      <div className="row justify-content-md-center">
-        <div className="col-3 border p-3 bg-dark">1 of 3</div>
-        <div className="col-md-auto border p-3 bg-dark">
-          Variable width content
-        </div>
-        <div className="col-3 border p-3 bg-dark">3 of 3</div>
+    <div className="container mt-4">
+      <div className="alert alert-primary" role="alert">
+        This is a primary alert—check it out!
       </div>
-      <div className="row mt-3">
-        <div className="col border border-danger bg-secondary p-3">1 of 3</div>
-        <div className="col-md-auto border border-danger bg-dark p-3">
-          Variable width content
-        </div>
-        <div className="col col-lg-2 border p-3 bg-dark">3 of 3</div>
+      <div className="alert alert-secondary" role="alert">
+        This is a secondary alert—check it out!
+      </div>
+      <div className="alert alert-success" role="alert">
+        This is a success alert—check it out!
+      </div>
+      <div className="alert alert-danger" role="alert">
+        This is a danger alert—check it out!
+      </div>
+      <div className="alert alert-warning" role="alert">
+        This is a warning alert—check it out!
+      </div>
+      <div className="alert alert-info" role="alert">
+        This is an info alert—check it out!
+      </div>
+      <div className="alert alert-light" role="alert">
+        This is a light alert—check it out!
+      </div>
+      <div className="alert alert-dark" role="alert">
+        This is a dark alert—check it out!
+      </div>
+      <div className="alert bg-white text-dark border" role="alert">
+        This is a white alert—check it out!
       </div>
     </div>
   );
