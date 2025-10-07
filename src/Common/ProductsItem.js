@@ -1,47 +1,48 @@
-// src/Common/ProductsItem.js
+// src/Common/ProductsItem.js (ฉบับแก้ไขกลับ)
 
 import React, { useContext } from "react";
+import { Card, Button } from "react-bootstrap";
 import { CartContext } from "./CartContext";
+// ❌ ลบการ import { useAuth } ออก
+// ❌ ลบการดึง isLoggedIn ออก
 
 const ProductsItem = (props) => {
-  const { name, price, image } = props;
-  const { addToCart } = useContext(CartContext);
+  const { addItemToCart } = useContext(CartContext);
+  // ❌ ลบ const { isLoggedIn } = useAuth(); ออก
 
-  const handleBuyNow = () => {
-    addToCart({ name, price, image });
-    alert(`เพิ่ม "${name}" (฿${price}) ลงในตะกร้าแล้ว!`);
+  const handleAddToCart = () => {
+    // ✅ ลบการตรวจสอบ if (!isLoggedIn) { ... } ออก
+
+    addItemToCart(props);
+    alert(`เพิ่มสินค้า ${props.name} เรียบร้อยแล้ว!`);
   };
 
   return (
-    <div className="col-lg-3 col-md-4 col-sm-6 hero-feature mb-4">
-      <div className="card h-100 shadow-sm border-danger border-2">
-        <img
-          src={image}
-          alt={name}
-          className="card-img-top"
-          style={{ height: "180px", objectFit: "cover" }}
-        />
-
-        <div className="caption card-body d-flex flex-column justify-content-between">
-          <div>
-            <h4 className="card-title">{name}</h4>
-            <p className="price fw-bold text-danger">ราคา ฿{price}</p>
-          </div>
-
-          <p className="d-grid gap-2">
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleBuyNow}
-            >
-              <i className="fas fa-cart-plus me-1"></i> ซื้อเลย!
-            </button>
-            <a href="#" className="btn btn-default btn-outline-secondary">
-              รายละเอียด
-            </a>
-          </p>
+    <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
+      <Card className="shadow-sm h-100">
+        <div style={{ height: "200px", overflow: "hidden" }}>
+          <Card.Img
+            variant="top"
+            src={props.image}
+            alt={props.name}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </div>
-      </div>
+        <Card.Body className="d-flex flex-column">
+          <Card.Title className="text-danger fw-bold">{props.name}</Card.Title>
+          <Card.Text className="text-muted small mb-1">
+            หมวดหมู่: {props.category}
+          </Card.Text>
+          <Card.Text className="fs-5 fw-bolder text-dark mt-auto mb-2">
+            ฿{props.price}
+          </Card.Text>
+
+          {/* ✅ ปุ่มเพิ่มในตะกร้าทำงานได้เสมอ */}
+          <Button variant="danger" onClick={handleAddToCart}>
+            <i className="fas fa-cart-plus me-2"></i> เพิ่มในตะกร้า
+          </Button>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

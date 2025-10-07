@@ -1,131 +1,150 @@
-// src/Common/Cart.js (ฉบับสมบูรณ์)
+// src/Common/Cart.js (ฉบับแก้ไข)
 
 import React, { useContext } from "react";
+import { Container, Row, Col, Table, Button, Alert } from "react-bootstrap";
 import { CartContext } from "./CartContext";
-import { Button, Table } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom"; // นำเข้า useNavigate
+import { useAuth } from "./AuthContext"; // 👈 1. นำเข้า useAuth
 
 const Cart = () => {
-  const { cartItems, removeItem, clearCart, updateQuantity } =
+  const { cartItems, totalItems, totalPrice, removeItemFromCart, clearCart } =
     useContext(CartContext);
 
-  const total = cartItems.reduce(
-    (sum, item) =>
-      sum + parseFloat(item.price.replace(/,/g, "")) * item.quantity,
-    0
-  );
+  // 👈 2. ดึงสถานะการล็อกอิน
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  // ฟังก์ชันจำลองการชำระเงิน
+  const handleCheckout = () => {
+    // 👈 3. ตรวจสอบสถานะการล็อกอิน
+    if (!isLoggedIn) {
+      alert("กรุณาล็อกอินเพื่อดำเนินการชำระเงิน");
+      // นำทางไปยังหน้า Login
+      navigate("/login");
+      return;
+    }
+
+    // 4. ถ้าล็อกอินแล้ว อนุญาตให้ชำระเงิน (จำลอง)
+    if (cartItems.length > 0) {
+      alert(
+        `ชำระเงินสำเร็จ! ยอดรวม: ฿${totalPrice}\nขอบคุณที่ใช้บริการ RedMart`
+      );
+      clearCart();
+    } else {
+      alert("ตะกร้าว่างเปล่า ไม่สามารถดำเนินการชำระเงินได้");
+    }
+  };
 
   return (
-    <div className="container mt-5 mb-5" style={{ minHeight: "50vh" }}>
-      <h2 className="mb-4 text-center text-danger">🛒 ตะกร้าสินค้า</h2>
+    <Container className="my-5" style={{ minHeight: "70vh" }}>
+      <h2 className="text-center text-danger mb-4">
+        <i className="fas fa-shopping-cart me-2"></i> ตะกร้าสินค้าของคุณ
+      </h2>
 
       {cartItems.length === 0 ? (
-        <div className="alert alert-info text-center" role="alert">
-          <i className="fas fa-box-open me-2"></i> ตะกร้าสินค้าว่างเปล่า
-          กลับไปเลือกซื้อสินค้ากันเถอะ!
-        </div>
+        <Alert variant="info" className="text-center">
+          <i className="fas fa-info-circle me-2"></i>
+          ตะกร้าสินค้าว่างเปล่า. <Link to="/products">เลือกซื้อสินค้าเลย</Link>!
+        </Alert>
       ) : (
         <>
-          <Table striped bordered hover responsive className="shadow-sm">
-            <thead>
-              <tr className="table-danger">
-                <th>สินค้า</th>
-                <th className="text-center" style={{ width: "150px" }}>
-                  ราคา/ชิ้น
-                </th>
-                <th className="text-center" style={{ width: "200px" }}>
-                  จำนวน
-                </th>
-                <th className="text-center" style={{ width: "150px" }}>
-                  ราคารวม
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map((item) => (
-                <tr key={item.name}>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      {/* แสดงรูปภาพจาก item.image (%PUBLIC_URL%/logo512.png) */}
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          objectFit: "cover",
-                        }}
-                        className="me-3 rounded"
-                      />
-                      <strong>{item.name}</strong>
-                    </div>
-                  </td>
-                  <td className="text-end fw-bold text-danger">
-                    ฿{item.price}
-                  </td>
-                  <td className="text-center">
-                    <div className="d-flex justify-content-center align-items-center">
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => updateQuantity(item.name, -1)}
-                      >
-                        -
-                      </Button>
-                      <span className="mx-2">{item.quantity}</span>
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => updateQuantity(item.name, 1)}
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </td>
-                  <td className="text-end fw-bold text-danger">
-                    ฿
-                    {(
-                      parseFloat(item.price.replace(/,/g, "")) * item.quantity
-                    ).toLocaleString()}
-                  </td>
-                  <td className="text-center">
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => removeItem(item.name)}
-                      title="ลบสินค้าออก"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          {/* ตารางสินค้า */}
+          <Row>
+            <Col lg={12}>
+              <Table striped bordered hover responsive className="shadow-sm">
+                {/* ... (Table Header เหมือนเดิม) ... */}
+                <thead className="table-danger text-white">
+                  <tr>
+                    <th>สินค้า</th>
+                    <th className="text-center">ราคา/หน่วย</th>
+                    <th className="text-center">จำนวน</th>
+                    <th className="text-center">ราคารวม</th>
+                    <th className="text-center">ลบ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cartItems.map((item) => (
+                    <tr key={item.id}>
+                      <td>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            marginRight: "10px",
+                            objectFit: "cover",
+                          }}
+                        />
+                        {item.name}
+                      </td>
+                      <td className="text-center">
+                        ฿
+                        {parseFloat(
+                          item.price.replace(/,/g, "")
+                        ).toLocaleString()}
+                      </td>
+                      <td className="text-center">{item.quantity}</td>
+                      <td className="text-center fw-bold text-danger">
+                        ฿
+                        {parseFloat(
+                          item.total.replace(/,/g, "")
+                        ).toLocaleString()}
+                      </td>
+                      <td className="text-center">
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => removeItemFromCart(item.id)}
+                        >
+                          <i className="fas fa-times"></i>
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
 
-          <div className="d-flex justify-content-end mt-4">
-            <div className="card p-4 shadow-sm" style={{ width: "400px" }}>
-              <h4 className="mb-3">
-                รวมยอดชำระ:{" "}
-                <span className="text-danger fw-bolder fs-3">
-                  ฿{total.toLocaleString("th-TH", { minimumFractionDigits: 2 })}
-                </span>
+          {/* สรุปยอดและปุ่ม */}
+          <Row className="mt-4">
+            <Col lg={12} className="text-end">
+              <h4 className="fw-bold text-danger">
+                ยอดรวมสินค้าทั้งหมด: {totalItems} รายการ
               </h4>
-              <Button variant="success" size="lg">
-                <i className="fas fa-credit-card me-2"></i> ดำเนินการชำระเงิน
-              </Button>
+              <h3 className="fw-bolder text-danger mb-4">
+                ราคาทั้งหมด: ฿{totalPrice}
+              </h3>
+
               <Button
-                variant="outline-danger"
-                className="mt-2"
+                variant="outline-secondary"
+                className="me-3"
                 onClick={clearCart}
               >
-                ล้างตะกร้าทั้งหมด
+                <i className="fas fa-trash-alt me-2"></i> ล้างตะกร้า
               </Button>
-            </div>
-          </div>
+
+              {/* 👈 5. ปุ่มดำเนินการชำระเงินที่เรียกใช้ handleCheckout */}
+              <Button variant="success" size="lg" onClick={handleCheckout}>
+                <i className="fas fa-money-check-alt me-2"></i>
+                {isLoggedIn ? "ดำเนินการชำระเงิน" : "ล็อกอินเพื่อชำระเงิน"}
+              </Button>
+
+              {/* 👈 6. แสดงข้อความแจ้งเตือนถ้ายังไม่ได้ล็อกอิน */}
+              {!isLoggedIn && (
+                <div className="mt-3">
+                  <Alert variant="warning" className="d-inline-block p-2">
+                    <i className="fas fa-exclamation-triangle me-2"></i>
+                    <Link to="/login">กรุณาล็อกอิน</Link> เพื่อดำเนินการชำระเงิน
+                  </Alert>
+                </div>
+              )}
+            </Col>
+          </Row>
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

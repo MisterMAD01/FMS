@@ -1,70 +1,81 @@
 // src/Common/CartContext.js
 
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 
 export const CartContext = createContext();
+
+// ฟังก์ชันเสริม: จัดรูปแบบตัวเลขเป็น string ที่มีจุลภาค
+const formatPrice = (number) => {
+  return parseFloat(number).toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+};
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  // 1. เพิ่มสินค้า: จัดการ Quantity แทนการเพิ่มรายการใหม่
-  const addToCart = (product) => {
-    setCartItems((prevItems) => {
-      const existingItemIndex = prevItems.findIndex(
-        (item) => item.name === product.name
-      );
-
-      if (existingItemIndex > -1) {
-        const newItems = [...prevItems];
-        newItems[existingItemIndex].quantity += 1;
-        return newItems;
-      } else {
-        return [...prevItems, { ...product, quantity: 1 }];
-      }
-    });
-  };
-
-  // 2. ลบสินค้าออกตามชื่อ
-  const removeItem = (productName) => {
-    setCartItems((currentItems) =>
-      currentItems.filter((item) => item.name !== productName)
+  // 🌟🌟🌟 ฟังก์ชัน addItemToCart 🌟🌟🌟
+  const addItemToCart = (productToAdd) => {
+    const itemIndex = cartItems.findIndex(
+      (item) => item.id === productToAdd.id
     );
-  };
 
-  // 3. อัปเดตจำนวนสินค้า (+/-)
-  const updateQuantity = (productName, change) => {
-    setCartItems((prevItems) => {
-      return prevItems
-        .map((item) => {
-          if (item.name === productName) {
-            const newQuantity = item.quantity + change;
-            return newQuantity >= 1 ? { ...item, quantity: newQuantity } : item;
-          }
-          return item;
-        })
-        .filter((item) => item.quantity >= 1);
+    let newCartItems;
+
+    if (itemIndex > -1) {
+      // สินค้ามีอยู่แล้ว: เพิ่มจำนวน
+      newCartItems = cartItems.map((item, index) =>
+        index === itemIndex ? { ...item, quantity: item.quantity + 1 } : item
+      );
+    } else {
+      // สินค้าใหม่: เพิ่มเข้าตะกร้า
+      const newItem = {
+        ...productToAdd,
+        quantity: 1,
+      };
+      newCartItems = [...cartItems, newItem];
+    }
+
+    // อัปเดตราคารวมของแต่ละรายการและตะกร้ารวม
+    const updatedCart = newCartItems.map((item) => {
+      const unitPrice = parseFloat(String(item.price).replace(/,/g, ""));
+      const total = unitPrice * item.quantity;
+      return {
+        ...item,
+        total: formatPrice(total), // จัดรูปแบบราคารวม
+      };
     });
+
+    setCartItems(updatedCart);
   };
 
-  // 4. ล้างตะกร้าทั้งหมด
+  const removeItemFromCart = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
   const clearCart = () => {
     setCartItems([]);
   };
 
-  const cartTotalQuantity = cartItems.reduce(
-    (total, item) => total + item.quantity,
+  // คำนวณยอดรวมทั้งหมด
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const rawTotalPrice = cartItems.reduce(
+    (sum, item) =>
+      sum + parseFloat(String(item.price).replace(/,/g, "")) * item.quantity,
     0
   );
+  const totalPrice = formatPrice(rawTotalPrice);
 
   return (
     <CartContext.Provider
       value={{
         cartItems,
-        addToCart,
-        removeItem,
+        totalItems,
+        totalPrice,
+        addItemToCart, // 👈 ต้องแน่ใจว่าชื่อฟังก์ชันถูกส่งออกตรงนี้!
+        removeItemFromCart,
         clearCart,
-        updateQuantity,
-        cartTotalQuantity,
       }}
     >
       {children}
