@@ -3,6 +3,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "./CartContext";
+import { useAuth } from "./AuthContext";
 
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -13,6 +14,11 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 
 const Navbars = () => {
   const { cartTotalQuantity } = useContext(CartContext);
+  // ดึง user object มาใช้ในการตรวจสอบ role
+  const { isLoggedIn, user, logout } = useAuth();
+
+  // 🌟 ตรวจสอบว่าผู้ใช้ปัจจุบันเป็น Admin หรือไม่
+  const isAdmin = isLoggedIn && user && user.role === "admin";
 
   return (
     <Navbar bg="danger" expand="lg" variant="dark" className="shadow-sm">
@@ -24,13 +30,34 @@ const Navbars = () => {
 
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {/* เมนูหลักภาษาไทย */}
             <Nav.Link as={Link} to="/">
               หน้าหลัก
             </Nav.Link>
             <Nav.Link as={Link} to="/products">
               สินค้าทั้งหมด
             </Nav.Link>
+
+            {/* 🔒 แสดงลิงก์เพิ่มสินค้า เฉพาะบทบาท 'admin' */}
+            {isAdmin && (
+              <Nav.Link
+                as={Link}
+                to="/add-product"
+                className="text-warning fw-bold"
+              >
+                <i className="fas fa-plus-square me-1"></i> เพิ่มสินค้า
+              </Nav.Link>
+            )}
+
+            {/* 🔒 แสดงลิงก์จัดการสินค้า เฉพาะบทบาท 'admin' */}
+            {isAdmin && (
+              <Nav.Link
+                as={Link}
+                to="/manage-products"
+                className="text-warning fw-bold"
+              >
+                <i className="fas fa-tasks me-1"></i> จัดการสินค้า
+              </Nav.Link>
+            )}
 
             <NavDropdown title="หมวดหมู่สินค้า" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="/products">
@@ -56,9 +83,20 @@ const Navbars = () => {
             <Button variant="outline-light">ค้นหา</Button>
           </Form>
 
-          {/* ปุ่มตะกร้าสินค้า */}
-          <Nav>
-            <Nav.Link as={Link} to="/cart">
+          {/* ส่วน Login และ Cart */}
+          <Nav className="align-items-center">
+            {/* แสดงชื่อผู้ใช้และบทบาท */}
+            {isLoggedIn && (
+              <Navbar.Text className="me-3 text-warning fw-bold">
+                <i className="fas fa-user-circle me-1"></i>
+                {user.role === "admin"
+                  ? `แม่ค้า: ${user.username}`
+                  : `ลูกค้า: ${user.username}`}
+              </Navbar.Text>
+            )}
+
+            {/* ปุ่ม Cart */}
+            <Nav.Link as={Link} to="/cart" className="p-0 me-3">
               <Button variant="light" className="position-relative">
                 <i className="fas fa-shopping-cart me-1 text-danger"></i>
                 ตะกร้า
@@ -68,6 +106,21 @@ const Navbars = () => {
                 </span>
               </Button>
             </Nav.Link>
+
+            {/* ปุ่ม Login / Logout */}
+            {isLoggedIn ? (
+              <Button variant="light" onClick={logout}>
+                <i className="fas fa-sign-out-alt me-1 text-danger"></i>{" "}
+                ออกจากระบบ
+              </Button>
+            ) : (
+              <Nav.Link as={Link} to="/login" className="p-0">
+                <Button variant="light">
+                  <i className="fas fa-sign-in-alt me-1 text-danger"></i>{" "}
+                  ล็อกอิน
+                </Button>
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </div>

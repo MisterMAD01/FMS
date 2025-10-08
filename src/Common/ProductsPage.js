@@ -3,94 +3,13 @@
 import React, { useState } from "react";
 import ProductsItem from "./ProductsItem";
 import { Container, Row, Col, ListGroup, Card, Form } from "react-bootstrap";
-
-// ✅ กำหนด Path รูปภาพใหม่: ใช้ logo512.png
-const productImagePath = "logo512.png";
-
-// ข้อมูลสินค้าทั้งหมด (เปลี่ยน image ให้ใช้ productImagePath)
-const allProductsData = [
-  // ชุดเครื่องนอน
-  {
-    name: "ผ้านวม",
-    price: "1,800",
-    image: productImagePath,
-    category: "ชุดเครื่องนอน",
-  },
-  {
-    name: "หมอนข้าง",
-    price: "900",
-    image: productImagePath,
-    category: "ชุดเครื่องนอน",
-  },
-  {
-    name: "ผ้าปูที่นอน",
-    price: "2,500",
-    image: productImagePath,
-    category: "ชุดเครื่องนอน",
-  },
-  {
-    name: "หมอน",
-    price: "1,500",
-    image: productImagePath,
-    category: "ชุดเครื่องนอน",
-  },
-
-  // เครื่องใช้ไฟฟ้า
-  {
-    name: "ทีวี",
-    price: "4,500",
-    image: productImagePath,
-    category: "เครื่องใช้ไฟฟ้า",
-  },
-  {
-    name: "วีดีโอ",
-    price: "6,500",
-    image: productImagePath,
-    category: "เครื่องใช้ไฟฟ้า",
-  },
-  {
-    name: "ตู้เย็น",
-    price: "7,500",
-    image: productImagePath,
-    category: "เครื่องใช้ไฟฟ้า",
-  },
-  {
-    name: "เครื่องซักผ้า",
-    price: "8,900",
-    image: productImagePath,
-    category: "เครื่องใช้ไฟฟ้า",
-  },
-
-  // เครื่องเขียน
-  {
-    name: "สมุด",
-    price: "25",
-    image: productImagePath,
-    category: "เครื่องเขียน",
-  },
-  {
-    name: "ปากกา",
-    price: "15",
-    image: productImagePath,
-    category: "เครื่องเขียน",
-  },
-  {
-    name: "ยางลบ",
-    price: "20",
-    image: productImagePath,
-    category: "เครื่องเขียน",
-  },
-  {
-    name: "ไม้บรรทัด",
-    price: "30",
-    image: productImagePath,
-    category: "เครื่องเขียน",
-  },
-];
-
-const categories = [...new Set(allProductsData.map((item) => item.category))];
+import { useProduct } from "./ProductContext"; // ✅ ดึง Context สินค้า
 
 const ProductsPage = () => {
+  // ✅ ดึงสินค้าทั้งหมดจาก ProductContext
+  const { products: allProductsData } = useProduct();
+  const categories = [...new Set(allProductsData.map((item) => item.category))];
+
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
 
@@ -105,14 +24,15 @@ const ProductsPage = () => {
   if (sortBy === "price_asc") {
     filteredProducts = [...filteredProducts].sort(
       (a, b) =>
-        parseFloat(a.price.replace(/,/g, "")) -
-        parseFloat(b.price.replace(/,/g, ""))
+        // แปลงราคาจาก string ที่มีจุลภาค ให้เป็น float
+        parseFloat(String(a.price).replace(/,/g, "")) -
+        parseFloat(String(b.price).replace(/,/g, ""))
     );
   } else if (sortBy === "price_desc") {
     filteredProducts = [...filteredProducts].sort(
       (a, b) =>
-        parseFloat(b.price.replace(/,/g, "")) -
-        parseFloat(a.price.replace(/,/g, ""))
+        parseFloat(String(b.price).replace(/,/g, "")) -
+        parseFloat(String(a.price).replace(/,/g, ""))
     );
   }
 
@@ -172,8 +92,11 @@ const ProductsPage = () => {
             {filteredProducts.length} รายการ)
           </h4>
           <Row className="text-center">
-            {filteredProducts.map((product, index) => (
-              <ProductsItem {...product} key={product.name + index} />
+            {filteredProducts.map((product) => (
+              <ProductsItem
+                {...product}
+                key={product.id} // ใช้ id ที่กำหนดใน Context
+              />
             ))}
           </Row>
           {filteredProducts.length === 0 && (
