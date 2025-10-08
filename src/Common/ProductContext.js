@@ -16,21 +16,24 @@ const initialProducts = [
     id: 1,
     name: "ผ้านวม",
     price: "1,800",
-    image: "https://via.placeholder.com/150/ff0000/ffffff?text=Duvet",
+    image:
+      "https://assets.omazz.com/media/images/104bae20-0731-4d3e-b15f-30e1ec7e9517/omazz-accessory-siberian-white-goose-down-duvet-o-4.jpg",
     category: "ชุดเครื่องนอน",
   },
   {
     id: 2,
     name: "หมอนข้าง",
     price: "900",
-    image: "https://via.placeholder.com/150/ff0000/ffffff?text=Bolster",
+    image:
+      "https://junyworlds.com/wp-content/uploads/2024/05/%E0%B8%AB%E0%B8%A1%E0%B8%AD%E0%B8%99%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%87.jpg",
     category: "ชุดเครื่องนอน",
   },
   {
     id: 3,
     name: "ผ้าปูที่นอน",
     price: "2,500",
-    image: "https://via.placeholder.com/150/ff0000/ffffff?text=Sheet",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbtC1LXU6phzHwxN1qoDl73HjAVlR2jRfMSQ&s",
     category: "ชุดเครื่องนอน",
   },
 
@@ -39,14 +42,16 @@ const initialProducts = [
     id: 4,
     name: "ทีวี",
     price: "4,500",
-    image: "https://via.placeholder.com/150/ff0000/ffffff?text=TV",
+    image:
+      "https://www.futureav.co.th/wp-content/uploads/2021/06/50P615-03.jpg",
     category: "เครื่องใช้ไฟฟ้า",
   },
   {
     id: 5,
     name: "ตู้เย็น",
     price: "7,500",
-    image: "https://via.placeholder.com/150/ff0000/ffffff?text=Fridge",
+    image:
+      "https://images.samsung.com/is/image/samsung/th-top-mount-freezer-rt25fgradsa-rt25fgradsa-st-Silver-n-127977305?$720_576_JPG$",
     category: "เครื่องใช้ไฟฟ้า",
   },
 
@@ -55,7 +60,7 @@ const initialProducts = [
     id: 6,
     name: "สมุด",
     price: "25",
-    image: "https://via.placeholder.com/150/ff0000/ffffff?text=Notebook",
+    image: "https://officework.co.th/upload/product/0120-0080-02.JPG",
     category: "เครื่องเขียน",
   },
 ];
