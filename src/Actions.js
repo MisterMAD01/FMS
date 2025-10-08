@@ -4,7 +4,7 @@ export const Actions = () => {
   //userLength is for showing the Data Loading message.
   let [userLength, setUserLength] = useState(null);
   useEffect(() => {
-    fetch("http://localhost/php-react/all-users.php")
+    fetch("http://fms.pnu.ac.th/Mistermad02/build/php-react/all-users.php")
       .then((res) => {
         return res.json();
       })
@@ -22,7 +22,7 @@ export const Actions = () => {
   }, []);
   // Inserting a new user into the database.
   const insertUser = (newUser) => {
-    fetch("http://localhost/php-react/add-user.php", {
+    fetch("http://fms.pnu.ac.th/Mistermad02/build/php-react/add-user.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export const Actions = () => {
   };
   // Updating a user.
   const updateUser = (userData) => {
-    fetch("http://localhost/php-react/update-user.php", {
+    fetch("http://fms.pnu.ac.th/Mistermad02/build/php-react/update-user.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export const Actions = () => {
     let userDeleted = users.filter((user) => {
       return user.id !== theID;
     });
-    fetch("http://localhost/php-react/delete-user.php", {
+    fetch("http://fms.pnu.ac.th/Mistermad02/build/php-react/delete-user.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
