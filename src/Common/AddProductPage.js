@@ -1,7 +1,15 @@
-// src/Common/AddProductPage.js
+// src/Common/AddProductPage.js (ฉบับแก้ไขเพื่อรองรับ URL รูปภาพภายนอก)
 
 import React, { useState } from "react";
-import { Form, Button, Container, Card, Row, Col } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Container,
+  Card,
+  Row,
+  Col,
+  Alert,
+} from "react-bootstrap";
 import { useProduct } from "./ProductContext";
 import { useNavigate } from "react-router-dom";
 
@@ -16,24 +24,48 @@ const AddProductPage = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState(categories[0]);
+  const [image, setImage] = useState("");
+  const [urlWarning, setUrlWarning] = useState("");
+
   const { addProduct } = useProduct();
   const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    const newUrl = e.target.value;
+    setImage(newUrl);
+
+    if (
+      newUrl.includes("google.com/url?") ||
+      newUrl.includes("google.com/imgres?")
+    ) {
+      setUrlWarning(
+        "⚠️ URL นี้ดูเหมือนเป็นลิงก์ Google Search กรุณาใช้ URL รูปภาพโดยตรง (Direct Image Link) เท่านั้น"
+      );
+    } else {
+      setUrlWarning("");
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (urlWarning) {
+      alert("ไม่สามารถบันทึกได้: กรุณาแก้ไข URL รูปภาพให้เป็นลิงก์ตรง");
+      return;
+    }
+
     if (name && price && category) {
       const newProduct = {
         name: name,
-        // ลบเครื่องหมายจุลภาคออก และแปลงเป็น string เพื่อให้เข้ากับรูปแบบข้อมูลเดิม
         price: price.replace(/,/g, ""),
         category: category,
+        image: image,
       };
 
       addProduct(newProduct);
 
       alert(`เพิ่มสินค้า "${name}" สำเร็จแล้ว!`);
-      navigate("/products"); // เมื่อเพิ่มเสร็จ ให้ไปที่หน้าสินค้าทั้งหมด
+      navigate("/products");
     }
   };
 
@@ -49,6 +81,7 @@ const AddProductPage = () => {
           <Card.Header className="bg-danger text-white text-center fw-bold fs-5">
             <i className="fas fa-plus-circle me-2"></i> เพิ่มสินค้าใหม่
           </Card.Header>
+
           <Card.Body>
             <Form onSubmit={handleSubmit}>
               <Row>
@@ -64,6 +97,7 @@ const AddProductPage = () => {
                     />
                   </Form.Group>
                 </Col>
+
                 <Col md={4}>
                   <Form.Group className="mb-3" controlId="productPrice">
                     <Form.Label>ราคา (บาท)</Form.Label>
@@ -96,16 +130,44 @@ const AddProductPage = () => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="productImage">
-                <Form.Label>รูปภาพสินค้า (ใช้ภาพ Placeholder)</Form.Label>
+                <Form.Label>URL รูปภาพสินค้า (ภายนอก)</Form.Label>
                 <Form.Control
-                  type="text"
-                  defaultValue="%PUBLIC_URL%/logo512.png"
-                  disabled
+                  type="url"
+                  placeholder="https://example.com/new-product.jpg (เว้นว่างเพื่อใช้รูปเริ่มต้น)"
+                  value={image}
+                  onChange={handleImageChange}
                 />
+
+                {urlWarning && (
+                  <Alert variant="danger" className="mt-2 small p-2">
+                    {urlWarning}
+                  </Alert>
+                )}
+
+                {image && !urlWarning && (
+                  <div className="mt-2">
+                    <img
+                      src={image}
+                      alt="Preview"
+                      style={{
+                        maxWidth: "100px",
+                        maxHeight: "100px",
+                        border: "1px solid #ccc",
+                      }}
+                      className="rounded"
+                    />
+                    <p className="text-muted small mt-1">ตัวอย่างรูปภาพ</p>
+                  </div>
+                )}
               </Form.Group>
 
               <div className="d-grid gap-2 mt-4">
-                <Button variant="danger" type="submit" size="lg">
+                <Button
+                  variant="danger"
+                  type="submit"
+                  size="lg"
+                  disabled={!!urlWarning}
+                >
                   <i className="fas fa-save me-2"></i> บันทึกสินค้า
                 </Button>
               </div>
