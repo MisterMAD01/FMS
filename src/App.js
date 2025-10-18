@@ -1,71 +1,37 @@
 // src/App.js
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import BillList from './pages/BillList';
+import ProductList from './pages/ProductList';
+import NewBill from './pages/NewBill';
 
-import React from "react";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-// นำเข้า Context และ Component
-import { CartProvider } from "./Common/CartContext";
-import { AuthProvider } from "./Common/AuthContext";
-import { ProductProvider } from "./Common/ProductContext";
-import Navbars from "./Common/Navbars";
-import Content from "./Common/Content";
-import Footer from "./Common/Footer";
-import Cart from "./Common/Cart";
-import ProductsPage from "./Common/ProductsPage";
-import LoginPage from "./Common/LoginPage";
-import AddProductPage from "./Common/AddProductPage";
-import ProtectedRoute from "./Common/ProtectedRoute";
-import ProductManagementPage from "./Common/ProductManagementPage"; // ✅ นำเข้า Component ใหม่
-
-// 404 Component
-const NotFound = () => (
-  <div className="container text-center mt-5 p-5" style={{ minHeight: "60vh" }}>
-    <h1 className="display-1 text-danger">404</h1>
-    <h3 className="mb-4">ไม่พบหน้านี้</h3>
-    <p>ขออภัย, ที่อยู่ที่คุณค้นหาไม่ถูกต้อง</p>
-  </div>
-);
-
-const App = () => {
+function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <ProductProvider>
-          <CartProvider>
-            <div className="App">
-              <Navbars />
+    <>
+      <Navbar />
+      <div className="container mt-4 mb-5">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/bills" element={<BillList />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/new-bill" element={<NewBill />} />
+        </Routes>
+      </div>
 
-              <Routes>
-                <Route path="/" element={<Content />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/products" element={<ProductsPage />} />
-                <Route path="/login" element={<LoginPage />} />
-
-                {/* 🔒 Protected Route: หน้าเพิ่มสินค้า */}
-                <Route
-                  path="/add-product"
-                  element={<ProtectedRoute element={AddProductPage} />}
-                />
-
-                {/* 🔒 Protected Route: หน้าจัดการสินค้า (ใหม่) */}
-                <Route
-                  path="/manage-products"
-                  element={<ProtectedRoute element={ProductManagementPage} />}
-                />
-
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-
-              <Footer />
-            </div>
-          </CartProvider>
-        </ProductProvider>
-      </AuthProvider>
-    </BrowserRouter>
+      {/* ❗️❗️ --- เพิ่มส่วน Footer ตรงนี้ --- ❗️❗️ */}
+      <footer className="app-footer">
+        <p className="mb-0">
+          มูฮัมหมัด มะเซ็ง 6560506027
+        </p>
+        <p className="mb-0">
+          สาขาวิชาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยนราธิวาสราชครินทร์
+        </p>
+      </footer>
+      {/* ❗️❗️ --- สิ้นสุดส่วน Footer --- ❗️❗️ */}
+    </>
   );
-};
+}
 
 export default App;

@@ -1,115 +1,192 @@
-/* src/App.css */
+/* src/App.css (เวอร์ชันอัปเกรด) */
+
+/* 1. กำหนดตัวแปรสี (CSS Variables) */
 :root {
-  --shopee-orange: #ff5722;
-  --shopee-light-orange: #ff7043;
+  --color-711-green: #00a651;
+  --color-711-orange: #f58220;
+  --color-711-red: #ed1c24;
+  --color-711-white: #ffffff;
+  --color-bg-light: #f4f7f6; /* ปรับสีพื้นหลังให้อ่อนลง */
+  --color-text: #333;
 }
 
+/* 2. ตั้งค่าพื้นฐาน */
 body {
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 0;
+  background-color: var(--color-bg-light);
+  color: var(--color-text);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.App {
-  font-family: Arial, sans-serif;
+/* 3. Navbar (เมนูหลัก) */
+.navbar-711 {
+  background-color: var(--color-711-white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-bottom: 3px solid var(--color-711-green);
 }
 
-.shopee-navbar {
-  background-color: var(--shopee-orange) !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.navbar-711 .navbar-brand {
+  color: var(--color-711-green) !important;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -1px;
 }
 
-.shopee-navbar .navbar-brand,
-.shopee-navbar .nav-link,
-.shopee-navbar .form-control::placeholder {
-  color: #fff !important;
+.navbar-711 .nav-link {
+  color: #555;
+  font-weight: 500;
+  margin: 0 0.5rem;
+  padding: 0.8rem 0.5rem;
+  border-bottom: 3px solid transparent;
 }
 
-.shopee-navbar .nav-link:hover {
-  color: rgba(255, 255, 255, 0.8) !important;
+.navbar-711 .nav-link:hover {
+  color: var(--color-711-green);
 }
 
-.shopee-navbar .form-control {
-  border-radius: 20px;
-  border: none;
+.navbar-711 .nav-link.active {
+  color: var(--color-711-green);
+  font-weight: 700;
+  border-bottom: 3px solid var(--color-711-orange);
 }
 
-.shopee-navbar .btn-outline-light {
-  border-color: #fff;
-  color: #fff;
-  border-radius: 20px;
-  margin-left: 5px;
-}
-
-.jumbotron.hero-spacer {
-  background-color: #fff;
-  color: #333;
-  padding: 3rem;
+/* 4. Buttons (ปุ่ม) */
+.btn {
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary.shopee-btn {
-  background-color: var(--shopee-orange);
-  border-color: var(--shopee-orange);
-  transition: background-color 0.3s;
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-711-green), #008a43);
+  border-color: var(--color-711-green);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 166, 81, 0.3);
 }
 
-.btn-primary.shopee-btn:hover {
-  background-color: var(--shopee-light-orange);
-  border-color: var(--shopee-light-orange);
+.btn-warning {
+  background: linear-gradient(135deg, var(--color-711-orange), #d9701c);
+  border-color: var(--color-711-orange);
+  color: var(--color-711-white);
 }
 
-.shopee-card {
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  background-color: #fff;
+.btn-danger {
+  background: linear-gradient(135deg, var(--color-711-red), #c9181f);
+  border-color: var(--color-711-red);
+}
+
+/* 5. Cards (กรอบเนื้อหา) */
+.card {
   border: none;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden; /* สำหรับ card-header */
 }
 
-.shopee-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.product-image {
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  height: 200px;
-  object-fit: cover;
-  width: 100%;
-}
-
-.shopee-card .caption {
-  padding: 15px;
-}
-
-.shopee-card h3 {
-  color: #333;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.shopee-card .price {
-  color: var(--shopee-orange);
+.card-header {
+  background-color: var(--color-711-green);
+  color: var(--color-711-white);
+  font-weight: 600;
   font-size: 1.1rem;
-  font-weight: bold;
+  padding: 1rem 1.5rem;
+  border-bottom: none;
 }
 
-.shopee-card .btn {
-  width: 100%;
-  margin-top: 10px;
+.card-body {
+  padding: 1.5rem;
 }
 
-.cart-list-group-item {
-  border: none;
-  background-color: #fff;
-  margin-bottom: 10px;
+/* 6. Form Inputs & Dropdown Format */
+.form-control, .form-select {
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--color-711-green);
+  box-shadow: 0 0 0 0.25rem rgba(0, 166, 81, 0.2);
 }
 
-.cart-icon {
-  margin-right: 5px;
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px 12px;
+  padding-right: 2.5rem; /* เพิ่มที่ว่างสำหรับลูกศร */
+}
+
+/* 7. Table (ตาราง) */
+.table {
+  border-collapse: separate;
+  border-spacing: 0 8px; /* ระยะห่างระหว่างแถว */
+}
+.table thead th {
+  background-color: var(--color-711-green);
+  color: var(--color-711-white);
+  border: none;
+  font-weight: 600;
+}
+.table thead th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.table thead th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+.table tbody tr {
+  background-color: var(--color-711-white);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  border-radius: 8px;
+}
+.table tbody td {
+  vertical-align: middle;
+  padding: 1rem;
+  border: none;
+}
+.table-hover tbody tr:hover {
+  background-color: #e6f6ec;
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: all 0.2s ease-out;
+}
+
+/* 8. ตัวช่วยจัดตำแหน่งไอคอน */
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* ระยะห่างระหว่างไอคอนกับข้อความ */
+}
+.icon-text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  justify-content: center;
+}
+/* 9. Footer (เพิ่มส่วนนี้ต่อท้าย) */
+/* 9. Footer (เวอร์ชันเข้าธีม 7-11) */
+.app-footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--color-711-green); /* ❗️ เปลี่ยนเป็นสีเขียว */
+  color: var(--color-711-white);           /* ❗️ เปลี่ยนเป็นสีขาว */
+  font-size: 0.9rem;
+  margin-top: 3rem;
+  width: 100%;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* เพิ่มเงาด้านบนเล็กน้อย */
+}
+/* 2. ตั้งค่าพื้นฐาน (อัปเดตฟอนต์) */
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-text);
+  font-family: 'Kanit', sans-serif; /* ❗️ เปลี่ยนฟอนต์ที่นี่ */
+  line-height: 1.6; /* ❗️ เพิ่มระยะห่างบรรทัดให้อ่านง่าย */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* 9. Typography (เพิ่มใหม่ต่อท้าย) */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600; /* ❗️ ให้หัวข้อเป็นตัวหนา (SemiBold) */
+  letter-spacing: -0.5px; /* ❗️ ลดระยะห่างตัวอักษรเล็กน้อยให้สวยงาม */
 }
